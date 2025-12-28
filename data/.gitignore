@@ -1,0 +1,6 @@
+# Ignore all generated reports
+reports/*
+
+# But keep the directory structure  
+!.gitignore
+!reports/.gitkeep

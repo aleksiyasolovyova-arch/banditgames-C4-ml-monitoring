@@ -1,0 +1,16 @@
+# Connect4 ML Monitor - Analytics Dependencies
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Database
+psycopg2-binary>=2.9.0
+
+# Dashboard (optional)
+dash>=2.14.0
+plotly>=5.17.0
