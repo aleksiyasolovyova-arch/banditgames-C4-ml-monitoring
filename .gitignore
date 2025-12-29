@@ -45,3 +45,20 @@ test_db.db
 
 # Others
 *.log
+
+# ---------------------------------
+#  Connect4 ML Specific Ignores
+# ---------------------------------
+
+# 1. TensorBoard Logs (These get huge!)
+tensorboard_logs/
+runs/
+events.out.tfevents.*
+
+# 2. Local Datasets (Don't commit training data)
+datasets/
+*.parquet
+
+# 3. Docker Volume Mount Points (If created locally)
+models/
+logs/

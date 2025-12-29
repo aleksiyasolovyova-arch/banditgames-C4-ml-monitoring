@@ -1,22 +1,24 @@
-FROM python:3.11-slim
-
-LABEL maintainer="your-team@example.com"
-LABEL service="connect4-ml-monitor"
-LABEL version="1.0.0"
+FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libfreetype6-dev \
+    libpng-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy monitoring code
-COPY performance_monitor.py .
+# Copy Source Code
+COPY src/ /app/src/
 COPY monitor.py .
 
-# Reports directory (mounted as volume)
-RUN mkdir -p /workspace/reports
-VOLUME /workspace/reports
+# Create directories
+RUN mkdir -p /workspace/datasets /workspace/tensorboard_logs
 
-# Default command: run monitor
+# Default command
 CMD ["python", "monitor.py"]
