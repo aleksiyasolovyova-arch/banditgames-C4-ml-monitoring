@@ -21,7 +21,9 @@ class TensorBoardMonitor:
             'overall': SummaryWriter(log_dir=str(self.log_dir / "overall")),
             'human': SummaryWriter(log_dir=str(self.log_dir / "human")),
             'mcts': SummaryWriter(log_dir=str(self.log_dir / "mcts")),
-            'ml_model': SummaryWriter(log_dir=str(self.log_dir / "ml_model"))
+            'ml_model': SummaryWriter(log_dir=str(self.log_dir / "ml_model")),
+            'win_prob': SummaryWriter(log_dir=str(self.log_dir / "win_probability"))
+
         }
         self.step = 0
 
@@ -114,3 +116,26 @@ class TensorBoardMonitor:
                         self.writers['overall'].add_scalars(f"Skill_vs_State/{phase}_Game_WinRate", clean_dict, self.step)
 
         logger.info(" TensorBoard updated successfully.")
+
+    def log_win_probability_metrics(
+                self,
+                mean_win_prob: float,
+                predicted_win_rate: float,
+                actual_win_rate: float,
+        ):
+            """
+            Logs win-probability calibration metrics.
+            These are NOT derived from datasets — they are telemetry.
+            """
+            self.step += 1
+
+            writer = self.writers['win_prob']
+
+            writer.add_scalar("Confidence/MeanWinProbability", mean_win_prob, self.step)
+            writer.add_scalar("Calibration/PredictedWinRate", predicted_win_rate, self.step)
+            writer.add_scalar("Calibration/ActualWinRate", actual_win_rate, self.step)
+
+            logger.info(
+                f"WinProb logged | mean={mean_win_prob:.3f} "
+                f"pred={predicted_win_rate:.3f} actual={actual_win_rate:.3f}"
+            )
